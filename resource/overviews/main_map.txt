@@ -1,0 +1,8 @@
+main_map
+{
+	material materials/overviews/main_map.vmat
+	pos_x -12288
+	pos_y 12288
+	scale 24.000
+}
+

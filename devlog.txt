@@ -1,0 +1,21 @@
+Frostivus 2017 - Pohka DevLog
+twitter: https://twitter.com/PohkaDota
+
+notes
+-------------------
+-path points are placed 5 indexes apart so that I can adapt for futhur changes in the pathing of the payload
+
+
+known bugs
+-------------------
+-multiple hero units trigger the payload twice: remove arc warden, lone druid and venge
+
+tasks Completed
+-------------------------
+
+=== 03/11/17 ===
+-payload that moves from point to point
+-global shop
+-payload only move when a hero is near it
+-playload moves depending on the amount of allies nearby
+-limited lobby to 4 players
