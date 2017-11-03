@@ -8,7 +8,7 @@ notes
 
 known bugs
 -------------------
--multiple hero units trigger the payload twice: remove arc warden, lone druid and venge
+
 
 tasks Completed
 -------------------------
@@ -19,3 +19,4 @@ tasks Completed
 -payload only move when a hero is near it
 -playload moves depending on the amount of allies nearby
 -limited lobby to 4 players
+-removed arc warden, lone druid and venge
