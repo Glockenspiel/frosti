@@ -6,7 +6,7 @@
 
 local PathPoints = {} 						--stores all the coordinates of the points of the path
 local nextPathIndex = 2 					--first index in PathPoints the bot will move to
-local maxSpeed = 200 							--maximum movespeed of the payload (payload moves faster the more allies that are in range)
+local maxSpeed = 500 							--200 maximum movespeed of the payload (payload moves faster the more allies that are in range)
 local allyDetectionRadius = 800 	--range allies need to be for the payload to move
 
 function Spawn()
@@ -20,17 +20,21 @@ end
 	points are named: path_ .. index
 ]]
 function getPathPoints()
-	local count = 0
-	local maxIndex = 75;
-	for i=1,maxIndex,1
+	local indexDiff = 0
+	local i = 10
+	while( indexDiff < 20 )
 	do
 		local entName = "path_" .. tostring(i)
 		local target = Entities:FindByName( nil, entName)
 		if target~=nil then
-			count = count+1
+			indexDiff = 0
 			local point = target:GetAbsOrigin()
-			PathPoints[count] = point
+			table.insert(PathPoints, point)
+		else
+			indexDiff = indexDiff + 1
 		end
+
+		i = i + 1
 	end
 end
 
@@ -60,7 +64,7 @@ function FollowPath()
 
 	local allyCount = 0
 	for _,unit in pairs(allyHeroesNearby) do
-		print("found ally: " .. unit:GetUnitName())
+		--print("found ally: " .. unit:GetUnitName())
 		allyCount = allyCount+1
 	end
 

@@ -3,7 +3,7 @@ twitter: https://twitter.com/PohkaDota
 
 notes
 -------------------
--path points are placed 5 indexes apart so that I can adapt for futhur changes in the pathing of the payload
+-path points are placed 10 indexes apart so that I can adapt for futhur changes in the pathing of the payload
 
 
 known bugs
@@ -20,3 +20,8 @@ tasks Completed
 -playload moves depending on the amount of allies nearby
 -limited lobby to 4 players
 -removed arc warden, lone druid and venge
+
+=== 04/11/17 ===
+-path points are now 10 indexes apart
+-refactored payload code so it no longer needs maxIndex
+-added high movespeed for debugging

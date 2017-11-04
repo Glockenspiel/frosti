@@ -3,6 +3,8 @@
 if Frosti == nil then
 	Frosti = class({})
 end
+local isDebugging = true
+local setOnce = false
 
 function Precache( context )
 	--[[
@@ -41,12 +43,16 @@ function Frosti:InitGameMode()
 	GameMode:SetStashPurchasingDisabled(true)
 
 	Frosti:SpawnStartingUnits()
+
 end
 
 -- Evaluate the state of the game
 function Frosti:OnThink()
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-		--print( "Template addon script is running." )
+		if IsInToolsMode() and isDebugging then
+			Frosti:ToolsModeSpawn()
+		end
+
 	elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
 		return nil
 	end
@@ -56,6 +62,32 @@ end
 --spawns all the units need when initializing
 function Frosti:SpawnStartingUnits()
 	--payload
-	local target = Entities:FindByName( nil, "path_5")
+	local target = Entities:FindByName( nil, "path_10")
 	CreateUnitByName("payload", target:GetAbsOrigin(), true, nil, nil, DOTA_TEAM_GOODGUYS)
+end
+
+--set movespeed of the player to fast when debugging
+function Frosti:ToolsModeSpawn()
+	if	setOnce then
+		return
+	end
+
+	units = FindUnitsInRadius(
+		DOTA_TEAM_GOODGUYS,
+		Vector(0, 0, 0),
+		nil,
+		FIND_UNITS_EVERYWHERE,
+		DOTA_UNIT_TARGET_TEAM_FRIENDLY,
+		DOTA_UNIT_TARGET_HERO,
+		DOTA_UNIT_TARGET_FLAG_NONE,
+		FIND_ANY_ORDER,
+		false
+	)
+
+	for _,u in pairs(units) do
+		if u:GetOwner()~=nil then
+			u:SetBaseMoveSpeed(600)
+			setOnce=true
+		end
+	end
 end
