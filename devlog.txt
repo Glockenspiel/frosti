@@ -25,3 +25,8 @@ tasks Completed
 -path points are now 10 indexes apart
 -refactored payload code so it no longer needs maxIndex
 -added high movespeed for debugging
+
+=== 06/11/17 ===
+-added spawn points and trigger boxes
+-spawning script to spawn the desired units when a trigger is touched
+-added mountain ogre

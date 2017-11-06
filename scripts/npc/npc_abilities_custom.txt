@@ -3,47 +3,35 @@
 {
 	"Version"		"1"
 
-	//=================================================================================================================
-	// Templar Assassin: Refraction Holdout
-	//=================================================================================================================
-	"templar_assassin_refraction_holdout"
+	"ogre_freeze_blast"
 	{
-		// General
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
-		"AbilityUnitDamageType"			"DAMAGE_TYPE_PHYSICAL"	
+		    // General  
+		// ----------------------------------------------------------------------------------------
+		"BaseClass"				 "ability_lua"
+		"ScriptFile"			 "abils/ogre_freeze_blast"
+		//"BaseClass"              "ability_datadriven"
+		"AbilityBehavior"        "DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityTextureName"     "legion_commander_overwhelming_odds"
+		"AbilityUnitTargetTeam"  "DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityUnitTargetType"  "DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_MAGIC_IMMUNE_ENEMIES"
+		"AbilityUnitDamageType"  "DAMAGE_TYPE_MAGICAL"
 
-		// Casting
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCastPoint"				"0.0 0.0 0.0 0.0"
+		"AbilityType"            "DOTA_ABILITY_TYPE_BASIC"
+		"Level"                  "1"
+		"MaxLevel"               "7"
+		"RequiredLevel"          "-4"
 
-		// Time		
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityCooldown"				"17.0 17.0 17.0 17.0"
+		"AnimationPlaybackRate"  "1"
+		"AnimationIgnoresModelScale" "1"
+		"StatusEffectName" 		 "particles/status_fx/status_effect_snow_heavy.vpcf"
 
-		// Cost
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilityManaCost"				"100"
-		
-		// Special
-		//-------------------------------------------------------------------------------------------------------------
-		"AbilitySpecial"
-		{
-			"01"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"damage_absorb"				"200 300 400 500"
-			}
-			"02"
-			{
-				"var_type"					"FIELD_INTEGER"
-				"bonus_damage"				"20 40 60 80"
-			}
-			"04"
-			{
-				"var_type"					"FIELD_FLOAT"
-				"duration"					"17.0 17.0 17.0 17.0"
-			}
-		}
+		// Stats
+		//----------------------------------------------------------------------------------------
+		"AbilityDamage"           "30"
+		"AbilityManaCost"         "0"
+		"AbilityCooldown"         "5"
+		"AbilityCastRange"        "2000"
+		"AbilityCastRangeBuffer"  "2000"
 	}
 }

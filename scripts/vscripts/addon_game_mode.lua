@@ -3,6 +3,8 @@
 if Frosti == nil then
 	Frosti = class({})
 end
+
+
 local isDebugging = true
 local setOnce = false
 
@@ -16,6 +18,13 @@ function Precache( context )
 	]]
 
 		PrecacheResource( "model", "models/items/courier/nexon_turtle_01_grey/nexon_turtle_01_grey.vmdl", context )
+		PrecacheResource( "model", "models/heroes/ogre_magi/ogre_magi.vmdl", context )
+		
+		
+		PrecacheResource( "particle", "particles/status_fx/status_effect_snow_heavy.vpcf", context )
+		PrecacheResource( "particle", "particles/units/heroes/hero_mirana/mirana_spell_arrow.vpcf", context )
+		
+		
 end
 
 -- Create the game mode when we activate
