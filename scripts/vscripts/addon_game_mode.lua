@@ -39,7 +39,7 @@ function Frosti:InitGameMode()
 	local GameMode = GameRules:GetGameModeEntity()
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 2 )
 	GameRules:SetGoldPerTick( 0 )
-	GameRules:SetPreGameTime( 0 )
+	GameRules:SetPreGameTime( 5 )
 	GameRules:SetCustomGameSetupAutoLaunchDelay( 0 )
 	GameRules:SetCustomGameTeamMaxPlayers(4,0)
 	GameRules:SetPostGameTime(30)
@@ -50,8 +50,9 @@ function Frosti:InitGameMode()
 	GameMode:SetTopBarTeamValuesVisible(false)
 	GameMode:SetRecommendedItemsDisabled(true)
 	GameMode:SetStashPurchasingDisabled(true)
+	GameMode:SetAnnouncerDisabled(true)
 
-	Frosti:SpawnStartingUnits()
+	--Frosti:SpawnStartingUnits()
 
 end
 
@@ -60,12 +61,37 @@ function Frosti:OnThink()
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
 		if IsInToolsMode() and isDebugging then
 			Frosti:ToolsModeSpawn()
+			
+			Frosti:AddFallAbility()
+			
 		end
 
 	elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
 		return nil
 	end
 	return 1
+end
+
+--adds the fall ability onto every hero in the game (once only)
+local addFallAbilityOnce = false;
+function Frosti:AddFallAbility()
+	if addFallAbilityOnce == true then
+		return
+	end
+	
+	local maxIndex = PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS)
+	for i=0, maxIndex do
+		local playerID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS,i)
+		local hPlayer = PlayerResource:GetPlayer(playerID)
+		
+		if hPlayer ~= nil then
+			local hero  = hPlayer:GetAssignedHero()
+			hero:AddAbility("fall_lua")
+			print("added falled ability")
+		end
+	end
+	
+	addFallAbilityOnce = true;
 end
 
 --spawns all the units need when initializing

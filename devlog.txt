@@ -30,3 +30,9 @@ tasks Completed
 -added spawn points and trigger boxes
 -spawning script to spawn the desired units when a trigger is touched
 -added mountain ogre
+-changing game idea, gampleay is too boring and linear
+-created hole in ground
+-added pathing over hole with clip and invisible tools materials
+-script which detects if player has been over hole for more than 1sec with a trigger box
+-fall ability is addedto all heroes when games starts
+-

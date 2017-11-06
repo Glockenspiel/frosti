@@ -34,4 +34,10 @@
 		"AbilityCastRange"        "2000"
 		"AbilityCastRangeBuffer"  "2000"
 	}
+	
+	"fall_lua"
+	{
+		"BaseClass"				 "ability_lua"
+		"ScriptFile"			 "abils/fall"
+	}
 }
