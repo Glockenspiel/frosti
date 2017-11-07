@@ -40,3 +40,5 @@ tasks Completed
 -fall abilty is activated when entering a hole trigger
 -unit falls under the map and dies
 -delay is currently 0.4s so players abilities have a chance to escape the fall
+-added flail animation
+-unit killed by fall is move to death point to stop visual bug with the death animation

@@ -6,14 +6,14 @@ local timeSinceFall = 0;
 function fall_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	caster:SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
-	--caster:SetAnimation("flail")
+	caster:StartGestureWithPlaybackRate(ACT_DOTA_FLAIL, 1.5)
 	self:SetContextThink("Tick", function() return self:Tick() end, 0.03)
 end
 
 --falling thinker function
 function fall_lua:Tick()
 	local interval = 0.03
-	local distToFall = 300
+	local distToFall = 600
 	local fallSpeed = 20
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
@@ -28,8 +28,12 @@ function fall_lua:Tick()
 		timeSinceFall = timeSinceFall + interval
 		return interval
 	else
+		local entPt = Entities:FindByName(nil, "death_point")
+		local point = entPt:GetAbsOrigin()
+		caster:SetAbsOrigin(point)
 		timeSinceFall = 0
 		caster:ForceKill(false)
 		caster:SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
+		caster:RemoveGesture(ACT_DOTA_FLAIL)
 	end
 end

@@ -12,7 +12,7 @@ function FallEnter(trigger)
 			local abil = unit:GetAbilityByIndex(i)
 			
 			if abil ~= nil then
-				print("found abil:" .. abil:GetAbilityName())
+				--print("found abil:" .. abil:GetAbilityName())
 				if abil:GetAbilityName() == "fall_lua" then
 					abil:CastAbility()
 				end
