@@ -1,7 +1,5 @@
 --called by hole trigger after a delay
 function FallEnter(trigger)
-	--local entIndex = trigger.activator:GetEntityIndex()
-	--print("entered:" .. tostring(entIndex))
 	--if the unit is still over the hole then activate fall physics
 	local unit = trigger.activator
 	
@@ -12,7 +10,6 @@ function FallEnter(trigger)
 			local abil = unit:GetAbilityByIndex(i)
 			
 			if abil ~= nil then
-				--print("found abil:" .. abil:GetAbilityName())
 				if abil:GetAbilityName() == "fall_lua" then
 					abil:CastAbility()
 				end

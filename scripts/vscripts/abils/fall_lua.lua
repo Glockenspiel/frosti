@@ -14,7 +14,7 @@ end
 function fall_lua:Tick()
 	local interval = 0.03
 	local distToFall = 600
-	local fallSpeed = 20
+	local fallSpeed = 30
 	local caster = self:GetCaster()
 	local origin = caster:GetOrigin()
 	local pos = origin + Vector(0,0,-fallSpeed)

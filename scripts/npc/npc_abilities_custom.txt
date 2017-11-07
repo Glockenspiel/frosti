@@ -45,4 +45,13 @@
 		"MaxLevel"               "1"
 		
 	}
+	
+	"pudge_meat_hook_vt_lua"
+	{
+		"BaseClass"				 "ability_lua"
+		"ScriptFile"			 "abils/pudge_meat_hook_vt_lua"
+		//"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_VECTOR_TARGETING | DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES"
+		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_VECTOR_TARGETING | DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_ROOT_DISABLES"
+		"AbilityTextureName"	"pudge_meat_hook"
+	}
 }
