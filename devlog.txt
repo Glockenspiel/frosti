@@ -34,5 +34,9 @@ tasks Completed
 -created hole in ground
 -added pathing over hole with clip and invisible tools materials
 -script which detects if player has been over hole for more than 1sec with a trigger box
--fall ability is addedto all heroes when games starts
--
+-fall ability is added to all heroes when games starts
+
+=== 07/11/17 ===
+-fall abilty is activated when entering a hole trigger
+-unit falls under the map and dies
+-delay is currently 0.4s so players abilities have a chance to escape the fall

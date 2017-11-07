@@ -1,21 +1,35 @@
 fall_lua = class ({})
---LinkLuaModifier( "fall_modifier_lua", LUA_MODIFIER_MOTION_NONE )
 
-local ticks = 0
+local timeSinceFall = 0;
 
+--activate the falling
 function fall_lua:OnSpellStart()
-	print("fall spell start")
 	local caster = self:GetCaster()
-	--CreateModifierThinker(caster, self, "fall_modifier", { duration = self:GetDuration() }, caster:GetAbsOrigin(), caster:GetTeamNumber(), false)
-	self:SetContextThink("Tick", Tick, 0.2)
+	caster:SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
+	--caster:SetAnimation("flail")
+	self:SetContextThink("Tick", function() return self:Tick() end, 0.03)
 end
 
+--falling thinker function
 function fall_lua:Tick()
+	local interval = 0.03
+	local distToFall = 300
+	local fallSpeed = 20
 	local caster = self:GetCaster()
-	local origin  = caster:SetAbsOrigin()
-	--caster:SetAbsOrigin()
-	print("pos:" .. origin)
-
-	ticks = ticks + 1
-	return 0.2
+	local origin = caster:GetOrigin()
+	local pos = origin + Vector(0,0,-fallSpeed)
+	caster:SetAbsOrigin(pos)
+	
+	local ground = GetGroundPosition(pos, caster)
+	local diff = caster:GetOrigin() - ground
+	local distBelowGround = diff:Length()
+	
+	if distBelowGround < distToFall and timeSinceFall < 2 then
+		timeSinceFall = timeSinceFall + interval
+		return interval
+	else
+		timeSinceFall = 0
+		caster:ForceKill(false)
+		caster:SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
+	end
 end

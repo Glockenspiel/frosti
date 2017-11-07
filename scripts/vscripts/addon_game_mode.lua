@@ -86,6 +86,7 @@ function Frosti:AddFallAbility()
 		
 		if hPlayer ~= nil then
 			local hero  = hPlayer:GetAssignedHero()
+			hero:SetMoveCapability(DOTA_UNIT_CAP_MOVE_FLY)
 			hero:AddAbility("fall_lua")
 			print("added falled ability")
 		end
