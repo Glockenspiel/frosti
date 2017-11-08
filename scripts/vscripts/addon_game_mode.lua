@@ -53,8 +53,8 @@ function Frosti:InitGameMode()
 	GameMode:SetAnnouncerDisabled(true)
 
 	--Frosti:SpawnStartingUnits()
-
 end
+
 
 -- Evaluate the state of the game
 function Frosti:OnThink()

@@ -18,17 +18,16 @@ Game.KeyInventoryToggle = function()
 	}
 };
 
-var firstCursorPos;
 // This is an example of how to use the GameUI.SetMouseCallback function
 GameUI.SetMouseCallback( function( eventName, arg ) {
 	var CONSUME_EVENT = true;
 	var CONTINUE_PROCESSING_EVENT = false;
 	
 	if ( GameUI.GetClickBehaviors() === CLICK_BEHAVIORS.DOTA_CLICK_BEHAVIOR_VECTOR_CAST ){
-		$.Msg( "vector targeting started" );
-		firstCursorPos = GameUI.GetScreenWorldPosition( GameUI.GetCursorPosition() );
-		$.Msg( firstCursorPos );
-		//GameEvents.SendCustomGameEventToServer(customEventName, {"some":"data"});
+		//$.Msg( "vector targeting started" );
+		var pos = GameUI.GetScreenWorldPosition( GameUI.GetCursorPosition() );
+		//$.Msg( pos );
+		GameEvents.SendCustomGameEventToServer("start_vector_target", {"point":  pos });
 	}
 
 	// if ( GameUI.GetClickBehaviors() !== CLICK_BEHAVIORS.DOTA_CLICK_BEHAVIOR_NONE ){

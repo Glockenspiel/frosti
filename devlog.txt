@@ -44,3 +44,5 @@ tasks Completed
 -unit killed by fall is move to death point to stop visual bug with the death animation
 -added vector skill to pudge
 -vector skill now detects the point clicked and released
+-custom game event to send js cursor position to lua ability
+-abilty calculates the final target of the projectile for meat hook
