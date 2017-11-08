@@ -74,6 +74,22 @@
 		"MovementTurnRate"          "1"       // Turning rate.
 	}
 	
+	"mini_pudge"
+	{
+		"vscripts"					"ai/mini_pudge.lua"
+		"Model"						"models/courier/minipudge/minipudge_flying.vmdl"
+		"BaseClass"					"npc_dota_creature"
+		"ConsideredHero"			"1"
+		"Level"						"1"
+		
+		"Ability1"					"pudge_meat_hook"
+		"Ability2"					"puck_phase_shift"
+		
+		"StatusHealth"				"7000"
+		"StatusMana"				"4000"		// Base mana.
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_FLY"
+	}
+	
 	"mountain_ogre"
 	{
 		"vscripts"					"ai/mountain_ogre.lua"

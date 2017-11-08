@@ -46,3 +46,9 @@ tasks Completed
 -vector skill now detects the point clicked and released
 -custom game event to send js cursor position to lua ability
 -abilty calculates the final target of the projectile for meat hook
+
+=== 08/11/2017 ===
+-mini pudge spawns
+-mini pudge faces direction of vector targeting
+-mini pudge cast meat hook on spawn
+-mini pudge uses phase shift, teleports away and then is killed

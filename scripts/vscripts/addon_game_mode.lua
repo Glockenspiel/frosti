@@ -16,6 +16,8 @@ function Precache( context )
 			PrecacheResource( "particle", "*.vpcf", context )
 			PrecacheResource( "particle_folder", "particles/folder", context )
 	]]
+	
+	
 
 		PrecacheResource( "model", "models/items/courier/nexon_turtle_01_grey/nexon_turtle_01_grey.vmdl", context )
 		PrecacheResource( "model", "models/heroes/ogre_magi/ogre_magi.vmdl", context )
@@ -23,6 +25,11 @@ function Precache( context )
 		
 		PrecacheResource( "particle", "particles/status_fx/status_effect_snow_heavy.vpcf", context )
 		PrecacheResource( "particle", "particles/units/heroes/hero_mirana/mirana_spell_arrow.vpcf", context )
+		
+		--mini pudge
+		PrecacheResource( "model", "models/courier/minipudge/minipudge_flying.vmdl", context )
+		PrecacheResource( "particle", "*particles/units/heroes/hero_puck/puck_phase_shift.vpcf", context )
+		
 		
 		
 end
