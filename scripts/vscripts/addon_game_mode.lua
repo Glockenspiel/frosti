@@ -60,6 +60,8 @@ function Frosti:InitGameMode()
 	GameMode:SetAnnouncerDisabled(true)
 
 	--Frosti:SpawnStartingUnits()
+	 ListenToGameEvent("npc_spawned", Frosti.AddFallAbility, self)
+	
 end
 
 
@@ -68,9 +70,6 @@ function Frosti:OnThink()
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
 		if IsInToolsMode() and isDebugging then
 			Frosti:ToolsModeSpawn()
-			
-			Frosti:AddFallAbility()
-			
 		end
 
 	elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
@@ -79,27 +78,12 @@ function Frosti:OnThink()
 	return 1
 end
 
---adds the fall ability onto every hero in the game (once only)
-local addFallAbilityOnce = false;
-function Frosti:AddFallAbility()
-	if addFallAbilityOnce == true then
-		return
+function Frosti:AddFallAbility(event)
+	local spawnedUnit = EntIndexToHScript( event.entindex )
+	print("Spawned unit:" .. spawnedUnit:GetUnitName())
+	if spawnedUnit:HasAbility("fall_lua") == false then
+		spawnedUnit:AddAbility("fall_lua")
 	end
-	
-	local maxIndex = PlayerResource:GetPlayerCountForTeam(DOTA_TEAM_GOODGUYS)
-	for i=0, maxIndex do
-		local playerID = PlayerResource:GetNthPlayerIDOnTeam(DOTA_TEAM_GOODGUYS,i)
-		local hPlayer = PlayerResource:GetPlayer(playerID)
-		
-		if hPlayer ~= nil then
-			local hero  = hPlayer:GetAssignedHero()
-			hero:SetMoveCapability(DOTA_UNIT_CAP_MOVE_FLY)
-			hero:AddAbility("fall_lua")
-			print("added falled ability")
-		end
-	end
-	
-	addFallAbilityOnce = true;
 end
 
 --spawns all the units need when initializing

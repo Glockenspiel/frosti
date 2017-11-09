@@ -18,10 +18,6 @@ function Disapear()
 	local phaseShiftAbil = thisEntity:GetAbilityByIndex(1)
 	phaseShiftAbil:CastAbility()
 	thisEntity:SetContextThink("Teleport", Teleport, 0.09)
-	-- local entPt = Entities:FindByName(nil, "death_point")
-	-- local point = entPt:GetAbsOrigin()
-	-- thisEntity:SetAbsOrigin(point)
-	-- thisEntity:ForceKill(false)
 end
 
 function Teleport()
