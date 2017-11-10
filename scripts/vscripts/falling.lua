@@ -4,7 +4,6 @@ function FallEnter(trigger)
 	local unit = trigger.activator
 	
 	if trigger.caller:IsTouching(unit) then
-		print("activate fall physics")
 		local maxIndex = unit:GetAbilityCount()-1
 		for i=0, maxIndex do
 			local abil = unit:GetAbilityByIndex(i)

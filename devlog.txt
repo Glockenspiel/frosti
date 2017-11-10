@@ -52,3 +52,9 @@ tasks Completed
 -mini pudge faces direction of vector targeting
 -mini pudge cast meat hook on spawn
 -mini pudge uses phase shift, teleports away and then is killed
+
+
+=== 09/11/2017 ===
+-all npcs get falling ability when they spawn
+-added AddAbilityIfNotExist()
+-added jump ability
