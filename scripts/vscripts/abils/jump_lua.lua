@@ -2,32 +2,33 @@ jump_lua = class({})
 local targetPos
 local diff
 local totalDist
-local caster
 local totalTime=0
 local startingPt
+local maxTime = 0.4
+local interval = 0.03
+local z = 350
 
 function jump_lua:OnSpellStart()
 	local caster = self:GetCaster()
-	print("spell cast")
-	print(targetPos)
 	startingPt = caster:GetAbsOrigin()
 	diff = targetPos - caster:GetAbsOrigin()
 	totalDist = diff:Length2D()
 	caster:SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
+	caster:StartGestureWithPlaybackRate(ACT_DOTA_FLAIL, 1.5)
 	self:SetContextThink("JumpThink", function() return self:JumpThink() end, 0.03)
 end
 
 
-function jump_lua:SetTarget(pos)
+function jump_lua:SetJump(pos, height, jumpTime)
 	targetPos = pos
+	z = height
+	maxTime = jumpTime
 end
 
+--jump takes high prioirty when moving the caster
 function jump_lua:JumpThink()
-	local interval = 0.03
-	local maxTime = 0.4
-	local z = 350
 	totalTime = totalTime + interval
-	local unit = self:GetCaster()
+	local caster = self:GetCaster()
 	
 	--local totalDist = diff:Length2D()
 	local percent = totalTime/maxTime
@@ -42,11 +43,10 @@ function jump_lua:JumpThink()
 	else 
 		zWeight = percent
 	end
-	print("zWeigth:" .. tostring(zWeight))
 	step = step + Vector(0, 0, zWeight*z)
 	
 	local nextPos = startingPt + step
-	unit:SetAbsOrigin(nextPos)
+	caster:SetAbsOrigin(nextPos)
 	
 	local vToTarget = targetPos - nextPos
 	local distToTarget = vToTarget:Length2D()
@@ -54,8 +54,10 @@ function jump_lua:JumpThink()
 		return interval
 	end
 	
-	unit:Stop()
-	unit:SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
+	--reset values
+	caster:RemoveGesture(ACT_DOTA_FLAIL)
+	caster:Stop()
+	caster:SetMoveCapability(DOTA_UNIT_CAP_MOVE_GROUND)
 	totalTime = 0
 	return
 end

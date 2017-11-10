@@ -81,10 +81,6 @@ end
 function Frosti:AddFallAbility(event)
 	local spawnedUnit = EntIndexToHScript( event.entindex )
 	print("Spawned unit:" .. spawnedUnit:GetUnitName())
-	-- if spawnedUnit:HasAbility("fall_lua") == false then
-		-- spawnedUnit:AddAbility("fall_lua")
-	-- end
-	
 	AddAbilityIfNotExist(spawnedUnit, "fall_lua")
 	AddAbilityIfNotExist(spawnedUnit, "jump_lua")
 end

@@ -58,3 +58,6 @@ tasks Completed
 -all npcs get falling ability when they spawn
 -added AddAbilityIfNotExist()
 -added jump ability
+-added flail
+-bug tested
+-removed old implementation of jump ability in jump_pad

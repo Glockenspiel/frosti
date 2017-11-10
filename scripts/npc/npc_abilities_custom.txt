@@ -60,7 +60,7 @@
 		"BaseClass"				 "ability_lua"
 		"ScriptFile"			 "abils/jump_lua"
 		
-		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
 		"Level"                  "1"
 		"MaxLevel"               "1"
 	}
