@@ -67,3 +67,5 @@ tasks Completed
 -unit now faces direction jump
 -unit is stunned for the duration of the jump
 -added tables for jump pad values
+-clear space for units after jump
+-each jump ability is a new instance rather than sharing ability, to avoid clashing varaibles bug

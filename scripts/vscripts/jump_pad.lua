@@ -1,5 +1,5 @@
 local jumpVals = {
-	{"jump_landing_1", 500, 0.4}
+	{"jump_landing_1", 500, 0.6}
 }
 
 
