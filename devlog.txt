@@ -61,3 +61,9 @@ tasks Completed
 -added flail
 -bug tested
 -removed old implementation of jump ability in jump_pad
+
+
+=== 10/11/2017 ===
+-unit now faces direction jump
+-unit is stunned for the duration of the jump
+-added tables for jump pad values

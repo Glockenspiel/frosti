@@ -1,4 +1,6 @@
 jump_lua = class({})
+LinkLuaModifier( "modifier_jump_lua", "abils/modifier_jump_lua", LUA_MODIFIER_MOTION_NONE )
+
 local targetPos
 local diff
 local totalDist
@@ -8,13 +10,17 @@ local maxTime = 0.4
 local interval = 0.03
 local z = 350
 
+
 function jump_lua:OnSpellStart()
 	local caster = self:GetCaster()
 	startingPt = caster:GetAbsOrigin()
 	diff = targetPos - caster:GetAbsOrigin()
 	totalDist = diff:Length2D()
+	caster:SetForwardVector(diff)
 	caster:SetMoveCapability(DOTA_UNIT_CAP_MOVE_NONE)
 	caster:StartGestureWithPlaybackRate(ACT_DOTA_FLAIL, 1.5)
+	
+	caster:AddNewModifier( self:GetCaster(), self, "modifier_jump_lua", { duration = maxTime } )
 	self:SetContextThink("JumpThink", function() return self:JumpThink() end, 0.03)
 end
 
@@ -30,9 +36,7 @@ function jump_lua:JumpThink()
 	totalTime = totalTime + interval
 	local caster = self:GetCaster()
 	
-	--local totalDist = diff:Length2D()
 	local percent = totalTime/maxTime
-	print("percent:" .. tostring(percent))
 	local step = diff * Vector(percent,percent,percent)
 	
 	--calculate height z-axis for curve on jump

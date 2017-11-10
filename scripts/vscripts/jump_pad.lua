@@ -1,3 +1,7 @@
+local jumpVals = {
+	{"jump_landing_1", 500, 0.4}
+}
+
 
 function StartJump(trigger)
 	local unit = trigger.activator
@@ -13,8 +17,10 @@ function StartJump(trigger)
 		return
 	end
 	
+	local vals = GetJumpValues(landingPtName)
+	
 	local maxIndex = unit:GetAbilityCount() -1
-	print("max:" .. tostring(maxIndex))
+	--print("max:" .. tostring(maxIndex))
 	for i=0, maxIndex do
 		local abil = unit:GetAbilityByIndex(i)
 		if abil ~= nil then
@@ -24,11 +30,20 @@ function StartJump(trigger)
 					abil:SetLevel(1)
 				end
 				
-				abil:SetJump(ent:GetAbsOrigin(), 500, 0.4)
+				abil:SetJump(ent:GetAbsOrigin(), vals[2], vals[3])
 				--local playerID = unit:GetPlayerID()
 				--unit:CastAbilityNoTarget(abil, playerID)
 				abil:CastAbility()
 			end
 		end
 	end
+end
+
+function GetJumpValues(entName)
+	for i=1, #jumpVals do
+		if jumpVals[i][1] == entName then
+			return jumpVals[i]
+		end
+	end
+	print("GetJumpValues not found")
 end
