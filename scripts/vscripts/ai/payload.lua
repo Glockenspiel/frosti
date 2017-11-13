@@ -12,6 +12,12 @@ local allyDetectionRadius = 800 	--range allies need to be for the payload to mo
 function Spawn()
 	print("spawn")
 	getPathPoints()
+	local abil = thisEntity:FindAbilityByName("dummy_lua")
+	if abil ~= nil then
+		abil:CastAbility()
+	else
+		print("ability not found")
+	end
 	thisEntity:SetContextThink("FollowPath", FollowPath, 0.2)
 end
 

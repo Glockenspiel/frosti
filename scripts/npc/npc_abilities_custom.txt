@@ -64,4 +64,14 @@
 		"Level"                  "1"
 		"MaxLevel"               "1"
 	}
+	
+	"dummy_lua"
+	{
+		"BaseClass"				 "ability_lua"
+		"ScriptFile"			 "abils/dummy_lua"
+		
+		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"Level"                  "1"
+		"MaxLevel"               "1"
+	}
 }

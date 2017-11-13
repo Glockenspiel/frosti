@@ -18,8 +18,8 @@ function Precache( context )
 	]]
 	
 	
-
-		PrecacheResource( "model", "models/items/courier/nexon_turtle_01_grey/nexon_turtle_01_grey.vmdl", context )
+	
+		PrecacheResource( "model", "models/courier/baby_winter_wyvern/baby_winter_wyvern.vmdl", context )
 		PrecacheResource( "model", "models/heroes/ogre_magi/ogre_magi.vmdl", context )
 		
 		
@@ -47,8 +47,13 @@ function Frosti:InitGameMode()
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 2 )
 	GameRules:SetGoldPerTick( 0 )
 	GameRules:SetPreGameTime( 5 )
-	GameRules:SetCustomGameSetupAutoLaunchDelay( 0 )
-	GameRules:SetCustomGameTeamMaxPlayers(4,0)
+	
+	if IsInToolsMode() then
+		GameRules:SetCustomGameSetupAutoLaunchDelay( 0 )
+	else
+		GameRules:SetCustomGameSetupAutoLaunchDelay( 30 )
+	end
+	GameRules:SetCustomGameTeamMaxPlayers(4,4)
 	GameRules:SetPostGameTime(30)
 
 	--set custom values for game mode
@@ -59,7 +64,7 @@ function Frosti:InitGameMode()
 	GameMode:SetStashPurchasingDisabled(true)
 	GameMode:SetAnnouncerDisabled(true)
 
-	--Frosti:SpawnStartingUnits()
+	Frosti:SpawnStartingUnits()
 	 ListenToGameEvent("npc_spawned", Frosti.AddFallAbility, self)
 	
 end

@@ -1,4 +1,4 @@
---called by hole trigger after a delay
+--called by hole in the ground trigger after a delay
 function FallEnter(trigger)
 	--if the unit is still over the hole then activate fall physics
 	local unit = trigger.activator

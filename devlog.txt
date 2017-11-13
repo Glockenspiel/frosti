@@ -69,3 +69,20 @@ tasks Completed
 -added tables for jump pad values
 -clear space for units after jump
 -each jump ability is a new instance rather than sharing ability, to avoid clashing varaibles bug
+-building first prototype of zone 1
+-lighting and fog
+-mesh below the ground
+-cliff to deal with shadows outside of draw distance
+
+=== 12/11/2017 ===
+-reated outline 2nd and 3rd island
+-designed and built 2nd island
+-added 10 jump pads to navigate islands and other terrain
+
+=== 13/11/2017 ===
+-hammer some triggers for falling
+-added dummy modifier to payload
+-payload is now winter wyvern courier
+-added better texturing to the map
+-create pillar on the map
+-disabled day/night cycle

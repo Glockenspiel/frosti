@@ -8,19 +8,17 @@
 		"vscripts"					"ai/payload"
 		// General
 		//----------------------------------------------------------------
-		"Model"						"models/items/courier/nexon_turtle_01_grey/nexon_turtle_01_grey.vmdl"	// Model.
+		"Model"						"models/courier/baby_winter_wyvern/baby_winter_wyvern.vmdl"	// Model.
 		"BaseClass"					"npc_dota_creature"
 		"ConsideredHero"			"1"
 		"SoundSet"					"n_creep_Melee"
 		"Level"						"8"
-		"ModelScale" 				"1.3"
+		"ModelScale" 				"1.6"
 
 		// Abilities
 		//----------------------------------------------------------------
-		"Ability1"					""			// Ability 1
-		"Ability2"					""			// Ability 2
-		"Ability3"					""			// Ability 3
-		"Ability4"					""			// Ability 4
+		"Ability1"					"jump_lua"			// Ability 1
+		"Ability2"					"dummy_lua"			// Ability 2
 
 		// Armor
 		//----------------------------------------------------------------
