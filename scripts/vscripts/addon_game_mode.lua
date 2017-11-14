@@ -20,15 +20,11 @@ function Precache( context )
 	
 	
 		PrecacheResource( "model", "models/courier/baby_winter_wyvern/baby_winter_wyvern.vmdl", context )
-		PrecacheResource( "model", "models/heroes/ogre_magi/ogre_magi.vmdl", context )
-		
-		
 		PrecacheResource( "particle", "particles/status_fx/status_effect_snow_heavy.vpcf", context )
-		PrecacheResource( "particle", "particles/units/heroes/hero_mirana/mirana_spell_arrow.vpcf", context )
 		
 		--mini pudge
-		PrecacheResource( "model", "models/courier/minipudge/minipudge_flying.vmdl", context )
-		PrecacheResource( "particle", "*particles/units/heroes/hero_puck/puck_phase_shift.vpcf", context )
+		--PrecacheResource( "model", "models/courier/minipudge/minipudge_flying.vmdl", context )
+		--PrecacheResource( "particle", "*particles/units/heroes/hero_puck/puck_phase_shift.vpcf", context )
 		
 		
 		
@@ -45,7 +41,7 @@ function Frosti:InitGameMode()
 	--set custom values for game rules
 	local GameMode = GameRules:GetGameModeEntity()
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 2 )
-	GameRules:SetGoldPerTick( 0 )
+	GameRules:SetGoldPerTick( 6 )
 	GameRules:SetPreGameTime( 5 )
 	
 	if IsInToolsMode() then
@@ -66,7 +62,8 @@ function Frosti:InitGameMode()
 	GameMode:SetDaynightCycleDisabled(true)
 
 	Frosti:SpawnStartingUnits()
-	 ListenToGameEvent("npc_spawned", Frosti.AddFallAbility, self)
+	CustomNetTables:SetTableValue("game", "stage", { value = 1})
+	ListenToGameEvent("npc_spawned", Frosti.AddFallAbility, self)
 	
 end
 

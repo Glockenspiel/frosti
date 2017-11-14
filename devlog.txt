@@ -86,3 +86,11 @@ tasks Completed
 -added better texturing to the map
 -create pillar on the map
 -disabled day/night cycle
+-added runes
+
+=== 14/11/2017 ===
+-spawn islands
+-shops
+-teleport from spawn islands
+-nettables for stage counter
+-victory condition

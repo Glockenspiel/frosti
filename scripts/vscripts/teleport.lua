@@ -33,7 +33,8 @@ function enter(trigger)
 	local unit = trigger.activator
 	local team  = unit:GetTeamNumber()
 	
-	local stage = 1 --replace by custom nettable
+	local stageTable = CustomNetTables:GetTableValue("game", "stage")
+	local stage = stageTable.value
 	
 	local curSpawns = Spawns[stage][team-1]
 	local index = math.random(1,#curSpawns)
