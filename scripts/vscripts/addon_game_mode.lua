@@ -63,6 +63,7 @@ function Frosti:InitGameMode()
 	GameMode:SetRecommendedItemsDisabled(true)
 	GameMode:SetStashPurchasingDisabled(true)
 	GameMode:SetAnnouncerDisabled(true)
+	GameMode:SetDaynightCycleDisabled(true)
 
 	Frosti:SpawnStartingUnits()
 	 ListenToGameEvent("npc_spawned", Frosti.AddFallAbility, self)
