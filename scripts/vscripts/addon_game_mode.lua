@@ -63,7 +63,7 @@ function Frosti:InitGameMode()
 
 	Frosti:SpawnStartingUnits()
 	CustomNetTables:SetTableValue("game", "stage", { value = 1})
-	ListenToGameEvent("npc_spawned", Frosti.AddFallAbility, self)
+	ListenToGameEvent("npc_spawned", Frosti.AddExtraAbilities, self)
 	
 end
 
@@ -71,9 +71,9 @@ end
 -- Evaluate the state of the game
 function Frosti:OnThink()
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-		if IsInToolsMode() and isDebugging then
-			Frosti:ToolsModeSpawn()
-		end
+		--if IsInToolsMode() and isDebugging then
+		--	Frosti:ToolsModeSpawn()
+		--end
 
 	elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
 		return nil
@@ -81,11 +81,12 @@ function Frosti:OnThink()
 	return 1
 end
 
-function Frosti:AddFallAbility(event)
+function Frosti:AddExtraAbilities(event)
 	local spawnedUnit = EntIndexToHScript( event.entindex )
 	print("Spawned unit:" .. spawnedUnit:GetUnitName())
 	AddAbilityIfNotExist(spawnedUnit, "fall_lua")
 	AddAbilityIfNotExist(spawnedUnit, "jump_lua")
+	AddAbilityIfNotExist(spawnedUnit, "speed_lua")
 end
 
 function AddAbilityIfNotExist(unit, abilityName)

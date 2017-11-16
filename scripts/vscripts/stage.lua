@@ -12,9 +12,9 @@ function enter(trigger)
 	CustomNetTables:SetTableValue("game", "stage", { value = index})
 
 	--victory condition
-	--[[
-	if index == 4 then
+	
+	if index == 5 then
 		GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
 	end
-	]]--
+	
 end

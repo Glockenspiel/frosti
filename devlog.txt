@@ -94,3 +94,15 @@ tasks Completed
 -teleport from spawn islands
 -nettables for stage counter
 -victory condition
+
+=== 15/11/2017 ===
+-trigger wholes for the rest of the 2nd island
+-speed boost power ups
+-tested map on workshop
+
+=== 16/11/2017 ===
+-hammer 3rd island
+-finished off holes
+-added new spawn points for last stage
+-added another jump pad on 3d island
+-added all the cliff to 2nd island

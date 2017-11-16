@@ -6,7 +6,7 @@
 
 local PathPoints = {} 						--stores all the coordinates of the points of the path
 local nextPathIndex = 2 					--first index in PathPoints the bot will move to
-local maxSpeed = 500 							--200 maximum movespeed of the payload (payload moves faster the more allies that are in range)
+local maxSpeed = 250 							--200 maximum movespeed of the payload (payload moves faster the more allies that are in range)
 local allyDetectionRadius = 800 	--range allies need to be for the payload to move
 
 function Spawn()
@@ -101,7 +101,7 @@ function FollowPath()
 	local payloadPoint = thisEntity:GetAbsOrigin()
 	local diff = payloadPoint - nextPoint
 	local dist = #diff
-	if dist < 200 then
+	if dist < 150 then
 		nextPathIndex = nextPathIndex+1
 	end
 

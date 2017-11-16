@@ -42,4 +42,14 @@
 		"Level"                  "1"
 		"MaxLevel"               "1"
 	}
+	
+	"speed_lua"
+	{
+		"BaseClass"				 "ability_lua"
+		"ScriptFile"			 "abils/speed_lua"
+		
+		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"Level"                  "1"
+		"MaxLevel"               "1"
+	}
 }

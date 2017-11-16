@@ -21,10 +21,17 @@ local SpawnsStage3 =
 	{"spawn_6", "spawn_7", "spawn_8"}
 }
 
+local SpawnsStage4 = 
+{
+	{"spawn_12", "spawn_9"},
+	{"spawn_10", "spawn_11"}
+}
+
 local Spawns = {
 	SpawnsStage1,
 	SpawnsStage2,
-	SpawnsStage3
+	SpawnsStage3,
+	SpawnsStage4
 }
 
 

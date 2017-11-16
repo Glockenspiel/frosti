@@ -8,7 +8,8 @@ local jumpVals = {
 	{"jump_landing_7", 600, 1},
 	{"jump_landing_8", 600, 1},
 	{"jump_landing_9", 600, 1},
-	{"jump_landing_10", 600, 1}
+	{"jump_landing_10", 600, 1},
+	{"jump_landing_11", 600, 0.6}
 }
 
 
