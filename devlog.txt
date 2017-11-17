@@ -106,3 +106,11 @@ tasks Completed
 -added new spawn points for last stage
 -added another jump pad on 3d island
 -added all the cliff to 2nd island
+
+=== 17/11/2017 ===
+-calculating total distance for payload
+-calculate current distance
+-created net table for round and scores
+-hud for progress bar
+-ignoring design for removing items and reseting levels on each round
+-teleport players back to base when round 1 ends

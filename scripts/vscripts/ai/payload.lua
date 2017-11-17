@@ -6,12 +6,16 @@
 
 local PathPoints = {} 						--stores all the coordinates of the points of the path
 local nextPathIndex = 2 					--first index in PathPoints the bot will move to
-local maxSpeed = 250 							--200 maximum movespeed of the payload (payload moves faster the more allies that are in range)
+local maxSpeed = 1000 							--200 maximum movespeed of the payload (payload moves faster the more allies that are in range)
 local allyDetectionRadius = 800 	--range allies need to be for the payload to move
 
 function Spawn()
-	print("spawn")
 	getPathPoints()
+	local totalDist = calcTotalDist()
+	CustomNetTables:SetTableValue("game", "dist_total", { value = totalDist })
+	CustomNetTables:SetTableValue("game", "dist_good", { value = 0 })
+	CustomNetTables:SetTableValue("game", "dist_bad", { value = 0})
+	CustomNetTables:SetTableValue("game", "round", { value = 1 })
 	local abil = thisEntity:FindAbilityByName("dummy_lua")
 	if abil ~= nil then
 		abil:CastAbility()
@@ -19,6 +23,7 @@ function Spawn()
 		print("ability not found")
 	end
 	thisEntity:SetContextThink("FollowPath", FollowPath, 0.2)
+	thisEntity:SetContextThink("UpdateCurDist", UpdateCurDist, 1)
 end
 
 --[[
@@ -42,6 +47,16 @@ function getPathPoints()
 
 		i = i + 1
 	end
+end
+
+function calcTotalDist()
+	local total = 0
+	for i=2, #PathPoints do
+		if PathPoints[i]~=nil then
+			total = total + DistBetweenPoints(PathPoints[i], PathPoints[i-1])
+		end
+	end
+	return total
 end
 
 --makes the payload move from 1 point to the next
@@ -104,6 +119,10 @@ function FollowPath()
 	if dist < 150 then
 		nextPathIndex = nextPathIndex+1
 	end
+	
+	
+	AddFOWViewer(DOTA_TEAM_BADGUYS, thisEntity:GetAbsOrigin(), 800, 0.2, false)
+	AddFOWViewer(DOTA_TEAM_GOODGUYS, thisEntity:GetAbsOrigin(), 800, 0.2, false)
 
 	return 0.2
 end
@@ -113,3 +132,34 @@ function setSpeed(allyCount)
 	local speed = maxSpeed*(allyCount/PlayerResource:GetTeamPlayerCount())
 	thisEntity:SetBaseMoveSpeed(speed)
 end
+
+--updates the current distance travelled in custom net tables
+function UpdateCurDist()
+	local curTotal = 0
+	for i=1, nextPathIndex-1 do
+		curTotal = curTotal + DistBetweenPoints(PathPoints[i], PathPoints[i+1])
+	end
+	local distToNextPt = DistBetweenPoints(PathPoints[nextPathIndex], thisEntity:GetAbsOrigin())
+	curTotal = curTotal - distToNextPt
+	
+	local totalDist = CustomNetTables:GetTableValue("game", "dist_total")
+	local percent  = curTotal/totalDist.value
+	local round = CustomNetTables:GetTableValue("game", "round")	
+		
+	if round.value == 1 then
+		CustomNetTables:SetTableValue("game", "dist_good", { value = percent })
+	else
+		CustomNetTables:SetTableValue("game", "dist_bad", { value = percent })
+	end
+	
+	local good = CustomNetTables:GetTableValue("game", "dist_good")	
+	--print("percent:" .. tostring(good.value))
+	
+	return 1
+end
+
+--2d length between vector a and b
+function DistBetweenPoints(a, b)
+	local diff = a-b
+	return diff:Length2D()
+end 
