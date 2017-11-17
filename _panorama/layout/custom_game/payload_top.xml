@@ -1,0 +1,38 @@
+<root>
+  <styles>
+		<include src="file://{resources}/styles/dotastyles.css" />
+		<include src="file://{resources}/styles/custom_game/payload_top.css" />
+  </styles>
+  <scripts>
+		<include src="file://{resources}/scripts/custom_game/keys.js" />
+  </scripts>
+	
+	
+	
+  <Panel class="bar">
+	<!-- timer -->
+	<Panel hittest="false" class="Timer">
+		<Label id="Timertext" text="5:00"/>
+	</Panel>
+
+	<Panel hclass="heroScoreLeft">
+		<Label id="goodguysScoreText" text="0"/>
+	</Panel>
+	
+	<Panel class="heroScoreRight">
+		<Label id="badguysScoreText" text="0"/>
+	</Panel>
+	
+	<Panel class="progressBar">
+		<Panel class="currentProgressBar" id="progress">
+		
+		</Panel>
+	</Panel>
+	
+  </Panel>
+
+
+  
+  
+  
+</root>
