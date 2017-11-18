@@ -1,12 +1,14 @@
 -- Generated from template
 
 if Frosti == nil then
-	Frosti = class({})
+	_G.Frosti = class({})
 end
 
 
 local isDebugging = false
 local setOnce = false
+_G.nextPathIndex = 2 					--first index in PathPoints the bot will move to
+PayloadTarget = nil
 
 function Precache( context )
 	--[[
@@ -42,11 +44,8 @@ function Frosti:InitGameMode()
 	local GameMode = GameRules:GetGameModeEntity()
 	GameMode:SetThink( "OnThink", self, "GlobalThink", 1 )
 	
-	
-	
-	GameRules:SetPreGameTime( 2 )
-	CustomNetTables:SetTableValue("gamestate", "state", { value = "pregame" })
-	CustomNetTables:SetTableValue("gamestate", "time", { value = -10 })
+	GameRules:SetPreGameTime( 4 )
+	Frosti:ResetCustomGameState()
 	Frosti:CustomGameStateChange()
 	
 	if IsInToolsMode() then
@@ -58,6 +57,9 @@ function Frosti:InitGameMode()
     GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 4 )
 	GameRules:SetPostGameTime(30)
 	GameRules:SetHeroSelectionTime(30)
+	GameRules:SetStartingGold(800)
+	GameRules:SetStrategyTime(0)
+	GameRules:SetShowcaseTime(0)
 
 	--set custom values for game mode
 	GameMode:SetRecommendedItemsDisabled(true)
@@ -123,8 +125,13 @@ function Frosti:OnThink()
 			CustomNetTables:SetTableValue("gamestate", "state", { value = "in_progress" })
 			CustomNetTables:SetTableValue("gamestate", "time", { value = 300 })
 		elseif state == "in_progress" then
-			CustomNetTables:SetTableValue("gamestate", "state", { value = "pregame" })
-			CustomNetTables:SetTableValue("gamestate", "time", { value = -10 })
+			local round = CustomNetTables:GetTableValue("game", "round").value
+			if round == 1 then
+				CustomNetTables:SetTableValue("game", "round", { value = 2 })
+				Frosti:SwitchSides()
+			else
+				Frosti:SetWinner()
+			end
 		end
 		
 		Frosti:CustomGameStateChange()
@@ -182,7 +189,7 @@ end
 function Frosti:SpawnStartingUnits()
 	--payload
 	local target = Entities:FindByName( nil, "path_10")
-	CreateUnitByName("payload", target:GetAbsOrigin(), true, nil, nil, DOTA_TEAM_GOODGUYS)
+	PayloadTarget = CreateUnitByName("payload", target:GetAbsOrigin(), true, nil, nil, DOTA_TEAM_GOODGUYS)
 end
 
 --set movespeed of the player to fast when debugging
@@ -209,4 +216,47 @@ function Frosti:ToolsModeSpawn()
 			setOnce=true
 		end
 	end
+end
+
+function Frosti:SwitchSides()
+	--return players to spawn
+	local spawnPts = { 
+		Entities:FindByName(nil, "good_spawn"):GetAbsOrigin(), 
+		Entities:FindByName(nil, "bad_spawn"):GetAbsOrigin() 
+	}
+
+	for teamNum = 2, 3 do
+		for i=1, 4 do
+			local playerID = PlayerResource:GetNthPlayerIDOnTeam(teamNum, i)
+			if playerID ~= nil then
+				local hPlayer = PlayerResource:GetPlayer(playerID)
+				if hPlayer ~=nil then
+					local hero = hPlayer:GetAssignedHero()
+					FindClearSpaceForUnit(hero, spawnPts[teamNum-1], true)
+					hero:Stop()
+				end
+			end
+		end
+	end
+
+	--return the payload to the spawn
+	local startPt = Entities:FindByName(nil, "path_10"):GetAbsOrigin()
+	FindClearSpaceForUnit(PayloadTarget, startPt, true)
+	
+	--reset path for payload
+	nextPathIndex=2
+	
+	Frosti:ResetCustomGameState()
+end
+
+--sets victory condition
+function Frosti:SetWinner()
+	--furthest distance is the winner
+	--if distance is the same then pick the team with the most kills
+	GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
+end
+
+function Frosti:ResetCustomGameState()
+	CustomNetTables:SetTableValue("gamestate", "time", { value = -10 })
+	CustomNetTables:SetTableValue("gamestate", "state", { value = "pregame" })
 end

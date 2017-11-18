@@ -5,7 +5,6 @@
 ]]
 
 local PathPoints = {} 						--stores all the coordinates of the points of the path
-local nextPathIndex = 2 					--first index in PathPoints the bot will move to
 local maxSpeed = 1000 							--200 maximum movespeed of the payload (payload moves faster the more allies that are in range)
 local allyDetectionRadius = 800 	--range allies need to be for the payload to move
 
