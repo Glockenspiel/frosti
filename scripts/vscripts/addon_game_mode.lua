@@ -5,7 +5,7 @@ if Frosti == nil then
 end
 
 
-local isDebugging = true
+local isDebugging = false
 local setOnce = false
 
 function Precache( context )
@@ -40,17 +40,24 @@ function Frosti:InitGameMode()
 
 	--set custom values for game rules
 	local GameMode = GameRules:GetGameModeEntity()
-	GameMode:SetThink( "OnThink", self, "GlobalThink", 2 )
-	GameRules:SetGoldPerTick( 6 )
-	GameRules:SetPreGameTime( 5 )
+	GameMode:SetThink( "OnThink", self, "GlobalThink", 1 )
+	
+	
+	
+	GameRules:SetPreGameTime( 2 )
+	CustomNetTables:SetTableValue("gamestate", "state", { value = "pregame" })
+	CustomNetTables:SetTableValue("gamestate", "time", { value = -10 })
+	Frosti:CustomGameStateChange()
 	
 	if IsInToolsMode() then
-		GameRules:SetCustomGameSetupAutoLaunchDelay( 0 )
+		GameRules:SetCustomGameSetupAutoLaunchDelay( 10 )
 	else
 		GameRules:SetCustomGameSetupAutoLaunchDelay( 30 )
 	end
-	GameRules:SetCustomGameTeamMaxPlayers(4,4)
+	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 4 )
+    GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 4 )
 	GameRules:SetPostGameTime(30)
+	GameRules:SetHeroSelectionTime(30)
 
 	--set custom values for game mode
 	GameMode:SetRecommendedItemsDisabled(true)
@@ -64,21 +71,96 @@ function Frosti:InitGameMode()
 	Frosti:SpawnStartingUnits()
 	CustomNetTables:SetTableValue("game", "stage", { value = 1})
 	ListenToGameEvent("npc_spawned", Frosti.AddExtraAbilities, self)
+	ListenToGameEvent("game_rules_state_change", Frosti.ChangeGameState, self)
+end
+
+function Frosti:ChangeGameState(event)
+	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
+		--add more movespeed to each hero at the start of the game
+		local extraMS = 80
+		for teamNum = 2, 3 do
+			for i=1, 4 do
+				local playerID = PlayerResource:GetNthPlayerIDOnTeam(teamNum, i)
+				if playerID ~= nil then
+					local hPlayer = PlayerResource:GetPlayer(playerID)
+					if hPlayer ~=nil then
+						local hero = hPlayer:GetAssignedHero()
+						local baseMS = hero:GetBaseMoveSpeed()
+						hero:SetBaseMoveSpeed(baseMS + extraMS)
+					end
+				end
+			end
+		end
+	end
+end	
+
+
+--should be called when the key "state" in the custom net table "gamestate" changes
+function Frosti:CustomGameStateChange()
+	--local curTime = CustomNetTables:GetTableValue("gamestate", "time").value
+	local state = CustomNetTables:GetTableValue("gamestate", "state").value
+	
+	if state ==  "pregame" then
+		GameRules:SetGoldPerTick( 0 )
+		--disable attackers teleport
+	elseif state == "in_progress" then
+	--print("game started")
+		--enable attackers teleport
+		GameRules:SetGoldPerTick( 6 )
+	end
 end
 
 
--- Evaluate the state of the game
+
+-- Evaluate the state of the game using net table
 function Frosti:OnThink()
+	local state = CustomNetTables:GetTableValue("gamestate", "state").value
+	local curTime = CustomNetTables:GetTableValue("gamestate", "time").value
 	
-	
-
-	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
-		if IsInToolsMode() and isDebugging then
-			Frosti:ToolsModeSpawn()
+	--changing state
+	if curTime == 0 then
+		if state == "pregame" then
+			CustomNetTables:SetTableValue("gamestate", "state", { value = "in_progress" })
+			CustomNetTables:SetTableValue("gamestate", "time", { value = 300 })
+		elseif state == "in_progress" then
+			CustomNetTables:SetTableValue("gamestate", "state", { value = "pregame" })
+			CustomNetTables:SetTableValue("gamestate", "time", { value = -10 })
 		end
-
-	elseif GameRules:State_Get() >= DOTA_GAMERULES_STATE_POST_GAME then
-		return nil
+		
+		Frosti:CustomGameStateChange()
+	end
+	
+	state = CustomNetTables:GetTableValue("gamestate", "state").value
+	curTime = CustomNetTables:GetTableValue("gamestate", "time").value
+	
+	if GameRules:State_Get() > DOTA_GAMERULES_STATE_PRE_GAME then
+		--pregame of a round
+		if state == "pregame" then
+			CustomNetTables:SetTableValue("gamestate", "time", { value = curTime + 1 })
+			
+		--round in progress
+		elseif state == "in_progress" then
+			CustomNetTables:SetTableValue("gamestate", "time", { value = curTime - 1 })
+			
+			--passive experience
+			local XPS = 30 --experience per second
+			for teamNum = 2, 3 do
+				for i=1, 4 do
+					local playerID = PlayerResource:GetNthPlayerIDOnTeam(teamNum, i)
+					if playerID ~= nil then
+						local hPlayer = PlayerResource:GetPlayer(playerID)
+						if hPlayer ~=nil then
+							local hero = hPlayer:GetAssignedHero()
+							hero:AddExperience(XPS , 0, false, true)
+						end
+					end
+				end
+			end
+			
+		--game over
+		else
+			return nil
+		end
 	end
 	return 1
 end

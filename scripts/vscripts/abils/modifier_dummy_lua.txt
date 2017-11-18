@@ -1,5 +1,0 @@
-modifier_dummy_lua = class({})
-
-function modifier_dummy_lua:OnCreated()
-	
-end

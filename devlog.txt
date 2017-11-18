@@ -114,3 +114,9 @@ tasks Completed
 -hud for progress bar
 -ignoring design for removing items and reseting levels on each round
 -teleport players back to base when round 1 ends
+
+== 18/11/2017 ===
+-custom game state changes
+-hud update to time in game state
+-added movespeed on load
+-added proper timing to setep stages
