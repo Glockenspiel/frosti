@@ -123,7 +123,7 @@ function Frosti:OnThink()
 	if curTime == 0 then
 		if state == "pregame" then
 			CustomNetTables:SetTableValue("gamestate", "state", { value = "in_progress" })
-			CustomNetTables:SetTableValue("gamestate", "time", { value = 300 })
+			CustomNetTables:SetTableValue("gamestate", "time", { value = 20 })
 		elseif state == "in_progress" then
 			local round = CustomNetTables:GetTableValue("game", "round").value
 			if round == 1 then
@@ -140,7 +140,7 @@ function Frosti:OnThink()
 	state = CustomNetTables:GetTableValue("gamestate", "state").value
 	curTime = CustomNetTables:GetTableValue("gamestate", "time").value
 	
-	if GameRules:State_Get() > DOTA_GAMERULES_STATE_PRE_GAME then
+	if GameRules:State_Get() > DOTA_GAMERULES_STATE_PRE_GAME and state ~= "post_game" then
 		--pregame of a round
 		if state == "pregame" then
 			CustomNetTables:SetTableValue("gamestate", "time", { value = curTime + 1 })
@@ -158,7 +158,9 @@ function Frosti:OnThink()
 						local hPlayer = PlayerResource:GetPlayer(playerID)
 						if hPlayer ~=nil then
 							local hero = hPlayer:GetAssignedHero()
-							hero:AddExperience(XPS , 0, false, true)
+							if hero ~= nil then
+								hero:AddExperience(XPS , 0, false, true)
+							end
 						end
 					end
 				end
@@ -218,6 +220,8 @@ function Frosti:ToolsModeSpawn()
 	end
 end
 
+--switches sides at the end of a round
+--players stay on the same team as the prevoius round
 function Frosti:SwitchSides()
 	--return players to spawn
 	local spawnPts = { 
@@ -253,6 +257,7 @@ end
 function Frosti:SetWinner()
 	--furthest distance is the winner
 	--if distance is the same then pick the team with the most kills
+	CustomNetTables:SetTableValue("gamestate", "state", { value = "post_game" })
 	GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
 end
 

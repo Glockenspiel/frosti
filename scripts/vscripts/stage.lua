@@ -17,7 +17,7 @@ function enter(trigger)
 	CustomNetTables:SetTableValue("game", "stage", { value = index})
 
 	--end of path is reached
-	if index == 5 then
+	if index == 2 then
 		local round = CustomNetTables:GetTableValue("game", "round")
 		if round.value == 1 then
 			CustomNetTables:SetTableValue("game", "round", { value = 2 })

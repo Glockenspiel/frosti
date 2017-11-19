@@ -64,34 +64,55 @@ function FollowPath()
 	if PathPoints[nextPathIndex] == nil then
 		nextPathIndex = 1
 	end
+	
+	local round = CustomNetTables:GetTableValue("game", "round").value
+	local allyTeam = DOTA_TEAM_GOODGUYS
+	local enemyTeam = DOTA_TEAM_BADGUYS
+	if round == 2 then
+		allyTeam = DOTA_TEAM_BADGUYS
+		enemyTeam = DOTA_TEAM_GOODGUYS
+	end
 
 	local nextPoint = PathPoints[nextPathIndex]
 
 	--find and count the number off allies
-	local allyHeroesNearby = FindUnitsInRadius(DOTA_TEAM_GOODGUYS,
-                              thisEntity:GetAbsOrigin(),
-                              nil,
-                              allyDetectionRadius,
-                              DOTA_UNIT_TARGET_TEAM_FRIENDLY,
-                              DOTA_UNIT_TARGET_HERO,
-                              DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED +
-															DOTA_UNIT_TARGET_FLAG_NOT_DOMINATED +
-															DOTA_UNIT_TARGET_FLAG_NOT_SUMMONED +
-															DOTA_UNIT_TARGET_FLAG_NOT_ILLUSIONS +
-															DOTA_UNIT_TARGET_FLAG_NOT_ATTACK_IMMUNE,
-                              FIND_ANY_ORDER,
-                              false)
+	local allyHeroesNearby = FindUnitsInRadius(
+		allyTeam,
+		thisEntity:GetAbsOrigin(),
+		nil,
+		allyDetectionRadius,
+		DOTA_UNIT_TARGET_TEAM_FRIENDLY,
+		DOTA_UNIT_TARGET_HERO,
+		DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED +
+			DOTA_UNIT_TARGET_FLAG_NOT_DOMINATED +
+			DOTA_UNIT_TARGET_FLAG_NOT_SUMMONED +
+			DOTA_UNIT_TARGET_FLAG_NOT_ILLUSIONS +
+			DOTA_UNIT_TARGET_FLAG_NOT_ATTACK_IMMUNE,
+		FIND_ANY_ORDER,
+		false)
+							  
+	local enemyHeroesNearby = FindUnitsInRadius(
+		enemyTeam,
+		thisEntity:GetAbsOrigin(),
+		nil,
+		allyDetectionRadius,
+		DOTA_UNIT_TARGET_TEAM_FRIENDLY,
+		DOTA_UNIT_TARGET_HERO,
+		DOTA_UNIT_TARGET_FLAG_PLAYER_CONTROLLED +
+			DOTA_UNIT_TARGET_FLAG_NOT_DOMINATED +
+			DOTA_UNIT_TARGET_FLAG_NOT_SUMMONED +
+			DOTA_UNIT_TARGET_FLAG_NOT_ILLUSIONS +
+			DOTA_UNIT_TARGET_FLAG_NOT_ATTACK_IMMUNE,
+		FIND_ANY_ORDER,
+		false)
 
-	local allyCount = 0
-	for _,unit in pairs(allyHeroesNearby) do
-		--print("found ally: " .. unit:GetUnitName())
-		allyCount = allyCount+1
-	end
+		
+	local allyCount = #allyHeroesNearby
 
 	local usedMove = false
 
 	--execute move command to the next path point if there is ally heroes nearby
-	if allyCount > 0 then
+	if allyCount > 0 and #enemyHeroesNearby == 0 then
 		local moveOrder = {
 			UnitIndex = thisEntity:entindex(),
 			OrderType = DOTA_UNIT_ORDER_MOVE_TO_POSITION,

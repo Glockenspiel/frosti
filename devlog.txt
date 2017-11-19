@@ -120,3 +120,13 @@ tasks Completed
 -hud update to time in game state
 -added movespeed on load
 -added proper timing to setep stages
+-switching sides
+-reset courier postion
+-reset player positions
+-reset custom game state
+-removed strategy time
+-removed loading showcase
+
+=== 19/11/2017 ===
+-testing round ending
+-payload only moves when no enemies are nearby
