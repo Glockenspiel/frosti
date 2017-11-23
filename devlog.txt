@@ -130,3 +130,42 @@ tasks Completed
 === 19/11/2017 ===
 -testing round ending
 -payload only moves when no enemies are nearby
+-added bonus time when reaches a stage
+-added particle for jump
+-particle for payload
+-payload doesnt move until timer is negative
+-spawn points now work when sides have been switched
+-particle for speed buff
+-particle for speed pad
+
+
+=== 23/11/2017 ===
+bug fixes:
+-timer no longer counts down when game is paused
+-no longer gain experience when game is paused
+-fixed payload pathing bug
+-players will now random if a hero if they dont pick
+
+HUD:
+-now shows percent of progression
+-new color scheme
+
+
+game play update:
+-max players in a lobby set to 8
+-removed razor and viper because they were OP
+-Passive experience reduced from 30 to 10 XP/Sec
+-starting time is no 3:40mins, was 5mins
+-reaching checkpoints will give an extra 120sec, was 60sec
+-starting gold from 800 to 650
+-the dire win once they get the payload futher than the radient did
+-at the start of round 2 all heroes are leveled up to level 10 if they havent reached that level yet
+
+part 2
+-center camera on teleport
+-100% immune from damage for 5 seconds after teleporting
+-every hero gets +80 movespeed throughout all the game
+
+part 3
+-removed meepo
+-hud now shows number of heroes pushing the payload

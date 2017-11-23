@@ -87,4 +87,14 @@
 		"StatusMana"				"4000"		// Base mana.
 		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_FLY"
 	}
+	
+	"dummy_teleport"
+	{
+		"Model"						"models/courier/baby_winter_wyvern/baby_winter_wyvern.vmdl"	
+		"BaseClass"					"npc_dota_creature"
+		"Ability1"					"dummy_teleport_lua"
+		"Level"						"1"
+		"VisionDaytimeRange"        "0"
+		"ModelScale" 				"0.1"
+	}
 }

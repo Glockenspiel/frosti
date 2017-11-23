@@ -5,8 +5,8 @@
 ]]
 
 local PathPoints = {} 						--stores all the coordinates of the points of the path
-local maxSpeed = 1000 							--200 maximum movespeed of the payload (payload moves faster the more allies that are in range)
-local allyDetectionRadius = 800 	--range allies need to be for the payload to move
+local maxSpeed = 250 							--200 maximum movespeed of the payload (payload moves faster the more allies that are in range)
+local allyDetectionRadius = 400 	--range allies need to be for the payload to move
 
 function Spawn()
 	getPathPoints()
@@ -15,8 +15,11 @@ function Spawn()
 	CustomNetTables:SetTableValue("game", "dist_good", { value = 0 })
 	CustomNetTables:SetTableValue("game", "dist_bad", { value = 0})
 	CustomNetTables:SetTableValue("game", "round", { value = 1 })
+	CustomNetTables:SetTableValue("payload", "nextPath", { value = 2 })
+	CustomNetTables:SetTableValue("game", "units_pushing", { value = 0 })
 	local abil = thisEntity:FindAbilityByName("dummy_lua")
 	if abil ~= nil then
+		print("casting dummy ability")
 		abil:CastAbility()
 	else
 		print("ability not found")
@@ -61,8 +64,9 @@ end
 --makes the payload move from 1 point to the next
 function FollowPath()
 	--if index is out of range then reset to 1
+	local nextPathIndex = CustomNetTables:GetTableValue("payload", "nextPath").value
 	if PathPoints[nextPathIndex] == nil then
-		nextPathIndex = 1
+		CustomNetTables:SetTableValue("payload", "nextPath", { value = 1 })
 	end
 	
 	local round = CustomNetTables:GetTableValue("game", "round").value
@@ -108,11 +112,14 @@ function FollowPath()
 
 		
 	local allyCount = #allyHeroesNearby
+	CustomNetTables:SetTableValue("game", "units_pushing", { value = allyCount })
 
 	local usedMove = false
+	
+	local gamestate = CustomNetTables:GetTableValue("gamestate", "state").value
 
 	--execute move command to the next path point if there is ally heroes nearby
-	if allyCount > 0 and #enemyHeroesNearby == 0 then
+	if gamestate=="in_progress" and allyCount > 0 and #enemyHeroesNearby == 0 then
 		local moveOrder = {
 			UnitIndex = thisEntity:entindex(),
 			OrderType = DOTA_UNIT_ORDER_MOVE_TO_POSITION,
@@ -137,7 +144,7 @@ function FollowPath()
 	local diff = payloadPoint - nextPoint
 	local dist = #diff
 	if dist < 150 then
-		nextPathIndex = nextPathIndex+1
+		CustomNetTables:SetTableValue("payload", "nextPath", { value = nextPathIndex+1 })
 	end
 	
 	
@@ -149,6 +156,7 @@ end
 
 --the more allies in range, the faster the payload moves
 function setSpeed(allyCount)
+	CustomNetTables:SetTableValue("game", "units_pushing", { value = allyCount })
 	local speed = maxSpeed*(allyCount/PlayerResource:GetTeamPlayerCount())
 	thisEntity:SetBaseMoveSpeed(speed)
 end
@@ -156,6 +164,7 @@ end
 --updates the current distance travelled in custom net tables
 function UpdateCurDist()
 	local curTotal = 0
+	local nextPathIndex = CustomNetTables:GetTableValue("payload", "nextPath").value
 	for i=1, nextPathIndex-1 do
 		curTotal = curTotal + DistBetweenPoints(PathPoints[i], PathPoints[i+1])
 	end
@@ -168,12 +177,17 @@ function UpdateCurDist()
 		
 	if round.value == 1 then
 		CustomNetTables:SetTableValue("game", "dist_good", { value = percent })
+		
+	--round 2
 	else
 		CustomNetTables:SetTableValue("game", "dist_bad", { value = percent })
+		
+		local good = CustomNetTables:GetTableValue("game", "dist_good").value
+		local bad = CustomNetTables:GetTableValue("game", "dist_bad").value
+		if bad > good then
+			Frosti:SetWinner()
+		end
 	end
-	
-	local good = CustomNetTables:GetTableValue("game", "dist_good")	
-	--print("percent:" .. tostring(good.value))
 	
 	return 1
 end

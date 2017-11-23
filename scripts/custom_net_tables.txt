@@ -3,6 +3,7 @@
         custom_net_tables =
     [
         "game",
-		"gamestate"
+		"gamestate",
+		"payload"
     ]
 }

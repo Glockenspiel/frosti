@@ -7,7 +7,7 @@ end
 
 local isDebugging = false
 local setOnce = false
-_G.nextPathIndex = 2 					--first index in PathPoints the bot will move to
+--_G.nextPathIndex = 2 					--first index in PathPoints the bot will move to
 PayloadTarget = nil
 
 function Precache( context )
@@ -26,7 +26,16 @@ function Precache( context )
 		
 		--mini pudge
 		--PrecacheResource( "model", "models/courier/minipudge/minipudge_flying.vmdl", context )
-		--PrecacheResource( "particle", "*particles/units/heroes/hero_puck/puck_phase_shift.vpcf", context )
+		PrecacheResource( "particle", "particles/econ/events/winter_major_2016/radiant_fountain_regen_wm_lvl3_a1.vpcf", context )
+		PrecacheResource( "particle", "particles/ui/ui_sweeping_ring.vpcf", context )
+		PrecacheResource( "particle", "particles/units/heroes/hero_pudge/pudge_rot.vpcf", context )
+		PrecacheResource( "particle", "particles/dummy_ring.vpcf", context )
+		PrecacheResource( "particle", "particles/jump_ring.vpcf", context )
+		PrecacheResource( "particle", "particles/speed_buff.vpcf", context )
+		PrecacheResource( "particle", "particles/teleport_buff.vpcf", context )
+		--PrecacheResource( "particle", "particles/teleport_beam.vpcf", context )
+		--PrecacheResource( "particle", "particles/units/heroes/hero_winter_wyvern/wyvern_arctic_burn_flying.vpcf", context )
+		
 		
 		
 		
@@ -49,15 +58,15 @@ function Frosti:InitGameMode()
 	Frosti:CustomGameStateChange()
 	
 	if IsInToolsMode() then
-		GameRules:SetCustomGameSetupAutoLaunchDelay( 10 )
+		GameRules:SetCustomGameSetupAutoLaunchDelay( 60 )
 	else
-		GameRules:SetCustomGameSetupAutoLaunchDelay( 30 )
+		GameRules:SetCustomGameSetupAutoLaunchDelay( 45 )
 	end
 	GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_GOODGUYS, 4 )
     GameRules:SetCustomGameTeamMaxPlayers( DOTA_TEAM_BADGUYS, 4 )
 	GameRules:SetPostGameTime(30)
-	GameRules:SetHeroSelectionTime(30)
-	GameRules:SetStartingGold(800)
+	GameRules:SetHeroSelectionTime(45)
+	GameRules:SetStartingGold(650)
 	GameRules:SetStrategyTime(0)
 	GameRules:SetShowcaseTime(0)
 
@@ -70,13 +79,37 @@ function Frosti:InitGameMode()
 	GameMode:SetAnnouncerDisabled(true)
 	GameMode:SetDaynightCycleDisabled(true)
 
-	Frosti:SpawnStartingUnits()
+	--Frosti:SpawnStartingUnits()
 	CustomNetTables:SetTableValue("game", "stage", { value = 1})
 	ListenToGameEvent("npc_spawned", Frosti.AddExtraAbilities, self)
 	ListenToGameEvent("game_rules_state_change", Frosti.ChangeGameState, self)
 end
 
 function Frosti:ChangeGameState(event)
+
+	--random hero if not selected
+	if GameRules:State_Get() == DOTA_GAMERULES_STATE_STRATEGY_TIME then
+		local pos = Entities:FindByName(nil, "death_point"):GetAbsOrigin()
+		CreateUnitByName("dummy_teleport", pos, true, nil, nil, DOTA_TEAM_GOODGUYS)
+		local target = Entities:FindByName( nil, "path_10")
+		PayloadTarget = CreateUnitByName("payload", target:GetAbsOrigin(), true, nil, nil, DOTA_TEAM_GOODGUYS)
+	
+		for teamNum = 2, 3 do
+			for i=1, 4 do
+				local playerID = PlayerResource:GetNthPlayerIDOnTeam(teamNum, i)
+				if playerID ~= nil then
+					if PlayerResource:HasSelectedHero(playerID) == false then
+						local hPlayer = PlayerResource:GetPlayer(playerID)
+						if hPlayer ~= nil then
+							hPlayer:MakeRandomHeroSelection()
+						end
+					end
+				end
+			end
+		end
+	end
+
+
 	if GameRules:State_Get() == DOTA_GAMERULES_STATE_GAME_IN_PROGRESS then
 		--add more movespeed to each hero at the start of the game
 		local extraMS = 80
@@ -87,8 +120,10 @@ function Frosti:ChangeGameState(event)
 					local hPlayer = PlayerResource:GetPlayer(playerID)
 					if hPlayer ~=nil then
 						local hero = hPlayer:GetAssignedHero()
-						local baseMS = hero:GetBaseMoveSpeed()
-						hero:SetBaseMoveSpeed(baseMS + extraMS)
+						if hero ~= nil then
+							local baseMS = hero:GetBaseMoveSpeed()
+							hero:SetBaseMoveSpeed(baseMS + extraMS)
+						end
 					end
 				end
 			end
@@ -104,10 +139,7 @@ function Frosti:CustomGameStateChange()
 	
 	if state ==  "pregame" then
 		GameRules:SetGoldPerTick( 0 )
-		--disable attackers teleport
 	elseif state == "in_progress" then
-	--print("game started")
-		--enable attackers teleport
 		GameRules:SetGoldPerTick( 6 )
 	end
 end
@@ -123,7 +155,7 @@ function Frosti:OnThink()
 	if curTime == 0 then
 		if state == "pregame" then
 			CustomNetTables:SetTableValue("gamestate", "state", { value = "in_progress" })
-			CustomNetTables:SetTableValue("gamestate", "time", { value = 20 })
+			CustomNetTables:SetTableValue("gamestate", "time", { value = 220 })
 		elseif state == "in_progress" then
 			local round = CustomNetTables:GetTableValue("game", "round").value
 			if round == 1 then
@@ -140,7 +172,7 @@ function Frosti:OnThink()
 	state = CustomNetTables:GetTableValue("gamestate", "state").value
 	curTime = CustomNetTables:GetTableValue("gamestate", "time").value
 	
-	if GameRules:State_Get() > DOTA_GAMERULES_STATE_PRE_GAME and state ~= "post_game" then
+	if GameRules:State_Get() > DOTA_GAMERULES_STATE_PRE_GAME and state ~= "post_game" and GameRules:IsGamePaused() == false then
 		--pregame of a round
 		if state == "pregame" then
 			CustomNetTables:SetTableValue("gamestate", "time", { value = curTime + 1 })
@@ -150,7 +182,7 @@ function Frosti:OnThink()
 			CustomNetTables:SetTableValue("gamestate", "time", { value = curTime - 1 })
 			
 			--passive experience
-			local XPS = 30 --experience per second
+			local XPS = 10 --experience per second
 			for teamNum = 2, 3 do
 				for i=1, 4 do
 					local playerID = PlayerResource:GetNthPlayerIDOnTeam(teamNum, i)
@@ -228,6 +260,8 @@ function Frosti:SwitchSides()
 		Entities:FindByName(nil, "good_spawn"):GetAbsOrigin(), 
 		Entities:FindByName(nil, "bad_spawn"):GetAbsOrigin() 
 	}
+	
+	local round2Level = 10
 
 	for teamNum = 2, 3 do
 		for i=1, 4 do
@@ -237,6 +271,12 @@ function Frosti:SwitchSides()
 				if hPlayer ~=nil then
 					local hero = hPlayer:GetAssignedHero()
 					FindClearSpaceForUnit(hero, spawnPts[teamNum-1], true)
+					
+					--set all heroes to level 10 for round 2
+					for k = hero:GetLevel(), round2Level-1 do
+						hero:HeroLevelUp(false)
+					end
+					
 					hero:Stop()
 				end
 			end
@@ -248,7 +288,7 @@ function Frosti:SwitchSides()
 	FindClearSpaceForUnit(PayloadTarget, startPt, true)
 	
 	--reset path for payload
-	nextPathIndex=2
+	CustomNetTables:SetTableValue("payload", "nextPath", { value = 2 })
 	
 	Frosti:ResetCustomGameState()
 end
@@ -256,12 +296,34 @@ end
 --sets victory condition
 function Frosti:SetWinner()
 	--furthest distance is the winner
+	--if both reached same distance then check which got there first
 	--if distance is the same then pick the team with the most kills
 	CustomNetTables:SetTableValue("gamestate", "state", { value = "post_game" })
-	GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
+	
+	local goodScore = CustomNetTables:GetTableValue("game", "dist_good").value
+	local badScore = CustomNetTables:GetTableValue("game", "dist_bad").value
+	
+	if goodScore > badScore then
+		GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
+	elseif goodScore < badScore then
+		GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
+	else
+		local goodKills = PlayerResource:GetTeamKills(DOTA_TEAM_GOODGUYS)
+		local badKills = PlayerResource:GetTeamKills(DOTA_TEAM_BADGUYS)
+		
+		if goodKill == nil then
+			GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
+		end
+		
+		if badKill == nil or goodKill > badKills then
+			GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
+		else
+			GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
+		end
+	end
 end
 
 function Frosti:ResetCustomGameState()
-	CustomNetTables:SetTableValue("gamestate", "time", { value = -10 })
+	CustomNetTables:SetTableValue("gamestate", "time", { value = -20 })
 	CustomNetTables:SetTableValue("gamestate", "state", { value = "pregame" })
 end
