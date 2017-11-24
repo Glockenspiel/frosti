@@ -10,25 +10,28 @@
 	
 	
   <Panel class="bar">
+	
 	<!-- timer -->
 	<Panel hittest="false" class="Timer">
-		<Label id="Timertext" text="5:00"/>
+		<Label id="Timertext" text="0:00"/>
 	</Panel>
 
 	<Panel hclass="heroScoreLeft">
-		<Label id="goodguysScoreText" text="0"/>
+		<Label id="goodguysScoreText" text="0%"/>
 	</Panel>
 	
 	<Panel class="heroScoreRight">
-		<Label id="badguysScoreText" text="0"/>
+		<Label id="badguysScoreText" text="0%"/>
 	</Panel>
 	
 	<Panel class="progressBar">
 		<Panel class="currentProgressBar" id="progress">
-		
 		</Panel>
 	</Panel>
 	
+	<Panel id="unitsPushing">
+		<Label id="unitsPushingText" text="-"/>
+	</Panel>
   </Panel>
 
 

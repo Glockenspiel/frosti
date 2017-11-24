@@ -57,7 +57,20 @@
 	{
 		"BaseClass"				 "ability_lua"
 		"ScriptFile"			 "abils/dummy_teleport_lua"
-		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET | DOTA_ABILITY_BEHAVIOR_HIDDEN"
+		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
+		"AbilityUnitTargetType"	"DOTA_UNIT_TARGET_ALL"
+		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_NONE"
+		"AbilityUnitTargetTeam"	"DOTA_UNIT_TARGET_TEAM_BOTH"
+		"Level"                  "1"
+		"MaxLevel"               "1"
+	}
+	
+	"center_cam_lua"
+	{
+		"BaseClass"				 "ability_lua"
+		"ScriptFile"			 "abils/center_cam_lua"
+		
+		"AbilityBehavior"		"DOTA_ABILITY_BEHAVIOR_UNIT_TARGET"
 		"AbilityUnitTargetType"	"DOTA_UNIT_TARGET_ALL"
 		"AbilityUnitTargetFlags" "DOTA_UNIT_TARGET_FLAG_NONE"
 		"AbilityUnitTargetTeam"	"DOTA_UNIT_TARGET_TEAM_BOTH"

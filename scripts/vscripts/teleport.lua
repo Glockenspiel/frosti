@@ -58,6 +58,8 @@ function enter(trigger)
 		FindClearSpaceForUnit(unit, target, true)
 		unit:Stop()
 		
+		
+		local playerID = unit:GetPlayerID()
 		--cast the ability on dummy teleport so a modifier will be added
 		--this modifier will help tackle spawn camping
 		local radUnits = FindUnitsInRadius(DOTA_TEAM_GOODGUYS,
@@ -71,11 +73,8 @@ function enter(trigger)
                               false)
 		
 		for _,u in pairs(radUnits) do
-			print("unit:" .. u:GetUnitName())
 			if u:GetUnitName() == "dummy_teleport" then
-				print("found dummy")
 				local abil = u:GetAbilityByIndex(0)
-				local playerID = unit:GetPlayerID()
 				u:CastAbilityOnTarget(unit, abil, playerID)
 				break
 			end

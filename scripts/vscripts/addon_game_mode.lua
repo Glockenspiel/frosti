@@ -270,6 +270,7 @@ function Frosti:SwitchSides()
 				local hPlayer = PlayerResource:GetPlayer(playerID)
 				if hPlayer ~=nil then
 					local hero = hPlayer:GetAssignedHero()
+					--return hero to spawn island
 					FindClearSpaceForUnit(hero, spawnPts[teamNum-1], true)
 					
 					--set all heroes to level 10 for round 2
@@ -278,6 +279,31 @@ function Frosti:SwitchSides()
 					end
 					
 					hero:Stop()
+					
+					--respawn if dead
+					if hero:IsAlive() == false then
+						hero:RespawnUnit()
+					end
+					
+					--center camera
+					local radUnits = FindUnitsInRadius(DOTA_TEAM_GOODGUYS,
+                              Vector(0, 0, 0),
+                              nil,
+                              FIND_UNITS_EVERYWHERE,
+                              DOTA_UNIT_TARGET_TEAM_FRIENDLY,
+                              DOTA_UNIT_TARGET_ALL,
+                              DOTA_UNIT_TARGET_FLAG_NONE,
+                              FIND_ANY_ORDER,
+                              false)
+		
+					for _,u in pairs(radUnits) do
+						if u:GetUnitName() == "dummy_teleport" then
+							local abil = u:GetAbilityByIndex(1)
+							u:CastAbilityOnTarget(hero, abil, playerID)
+							break
+						end
+					end
+					
 				end
 			end
 		end
@@ -295,30 +321,32 @@ end
 
 --sets victory condition
 function Frosti:SetWinner()
-	--furthest distance is the winner
-	--if both reached same distance then check which got there first
-	--if distance is the same then pick the team with the most kills
-	CustomNetTables:SetTableValue("gamestate", "state", { value = "post_game" })
-	
-	local goodScore = CustomNetTables:GetTableValue("game", "dist_good").value
-	local badScore = CustomNetTables:GetTableValue("game", "dist_bad").value
-	
-	if goodScore > badScore then
-		GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
-	elseif goodScore < badScore then
-		GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
-	else
-		local goodKills = PlayerResource:GetTeamKills(DOTA_TEAM_GOODGUYS)
-		local badKills = PlayerResource:GetTeamKills(DOTA_TEAM_BADGUYS)
+	if GameRules:State_Get() < DOTA_GAMERULES_STATE_POST_GAME then
+		--furthest distance is the winner
+		--if both reached same distance then check which got there first
+		--if distance is the same then pick the team with the most kills
+		CustomNetTables:SetTableValue("gamestate", "state", { value = "post_game" })
 		
-		if goodKill == nil then
-			GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
-		end
+		local goodScore = CustomNetTables:GetTableValue("game", "dist_good").value
+		local badScore = CustomNetTables:GetTableValue("game", "dist_bad").value
 		
-		if badKill == nil or goodKill > badKills then
+		if goodScore > badScore then
 			GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
-		else
+		elseif goodScore < badScore then
 			GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
+		else
+			local goodKills = PlayerResource:GetTeamKills(DOTA_TEAM_GOODGUYS)
+			local badKills = PlayerResource:GetTeamKills(DOTA_TEAM_BADGUYS)
+			
+			if goodKill == nil then
+				GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
+			end
+			
+			if badKill == nil or goodKill > badKills then
+				GameRules:SetGameWinner(DOTA_TEAM_GOODGUYS)
+			else
+				GameRules:SetGameWinner(DOTA_TEAM_BADGUYS)
+			end
 		end
 	end
 end

@@ -1,12 +1,11 @@
 
-
 .bar
 {
-	margin-top:0px;
+	margin-top:60px;
 	horizontal-align:center;
 	margin-left:0px;
-	width:40%;
-	height: 60px;
+	width:42%;
+	height: 86px;
 	background-image: url("file://{images}/custom_game/payload_top/back.png");
 	background-position: 50% 0%;
 	background-repeat: no-repeat;
@@ -16,33 +15,34 @@
 .Timer
 {
 	horizontal-align: center;
+	margin-top:4px;
 }
 
 #Timertext
 {
 	font-size:	40px;
 	text-align:center;
-	color: black;
+	color: white;
 }
 
 #goodguysScoreText
 {	
-	margin-top: 4px;
-	margin-left: 40%;
+	margin-top: 8px;
+	margin-left: 43%;
 	width:100px;
 	font-size:	32px;
 	text-align: right;
-	color: black;
+	color: white;
 }
 
 #badguysScoreText
 {
 	text-align: left;
-	margin-top: 4px;
+	margin-top: 8px;
 	width:100px;
-	margin-left: 75%;
+	margin-left: 74%;
 	font-size:	32px;
-	color: black;
+	color: white;
 }
 
 .progressBar
@@ -51,12 +51,29 @@
 	background-color: white;
 	width: 100%;
 	margin-top:-10px;
-	height: 8px;
+	height: 12px;
+	border: 1px solid #32383a;
 }
 
 .currentProgressBar
 {
 	width: 1%;
 	height: 100%;
-	background-color: orange;
+	background-color: #008fea;
+	border-right: 1px solid #32383a;
+}
+
+#unitsPushing
+{
+	horizontal-align:center;
+	margin-left: 25px;
+	width:50px;
+	margin-top: 50px;
+	height:20px;
+}
+
+#unitsPushingText
+{
+	color: white;
+	font-size: 20px;
 }

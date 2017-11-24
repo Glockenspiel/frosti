@@ -1,0 +1,5 @@
+<root>
+	<Panel class="bg">
+		<Image id="bg_img"  src="file://{images}/custom_game/loading_screen/bg.png" />
+	</Panel>
+</root>

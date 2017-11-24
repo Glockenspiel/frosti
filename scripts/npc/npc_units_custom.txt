@@ -93,6 +93,8 @@
 		"Model"						"models/courier/baby_winter_wyvern/baby_winter_wyvern.vmdl"	
 		"BaseClass"					"npc_dota_creature"
 		"Ability1"					"dummy_teleport_lua"
+		"Ability2"					"center_cam_lua"
+		
 		"Level"						"1"
 		"VisionDaytimeRange"        "0"
 		"ModelScale" 				"0.1"

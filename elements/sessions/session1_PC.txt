@@ -1,0 +1,18 @@
+"C:\Program Files (x86)\Steam\steamapps\common\dota 2 beta\game\bin\win64\dota2.exe" -addon frosti -tools -steam -console
+
+c:\program files (x86)\steam\steamapps\common\dota 2 beta\game\dota_addons\frosti\elements\sessions\session1.dmx#0
+
+1920x1080 @24.00 fps
+motion blur samples:    1
+depth of field samples: 64
+
+Frame  	Frame  	Total  	Shot                   	Map                    	DoF    	MBlur  	Total
+Number 	Time   	Time   	Name                   	Name                   	Count  	Count  	Count
+      0	  3.314	      3	shot1                 	maps/pvpmap_01.vmap   	   64	    1	   64
+      1	  1.432	      5	shot1                 	maps/pvpmap_01.vmap   	   64	    1	   64
+      2	  1.433	      6	shot1                 	maps/pvpmap_01.vmap   	   64	    1	   64
+      3	  1.437	      8	shot1                 	maps/pvpmap_01.vmap   	   64	    1	   64
+      4	  1.436	      9	shot1                 	maps/pvpmap_01.vmap   	   64	    1	   64
+      5	  1.432	     10	shot1                 	maps/pvpmap_01.vmap   	   64	    1	   64
+      6	  1.433	     12	shot1                 	maps/pvpmap_01.vmap   	   64	    1	   64
+      7	  1.436	     13	shot1                 	maps/pvpmap_01.vmap   	   64	    1	   64

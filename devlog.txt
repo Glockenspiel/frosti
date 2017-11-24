@@ -8,6 +8,9 @@ notes
 
 known bugs
 -------------------
+-step on a jump pad at the end of a round, if you are in the air then you wont be teleported back to your base
+-sometimes spawns are not found or players spawn at the wrong places
+-visual bug with hud, says players are moving payload in pregame
 
 
 tasks Completed
@@ -169,3 +172,10 @@ part 2
 part 3
 -removed meepo
 -hud now shows number of heroes pushing the payload
+-new loading screen
+-finished off map with some polish
+-aligned cliffs so the are more accurate with detecting if you have fallen off
+-all dead heroes repsawn at the start of round 2
+-camera centers on player when sides are switched
+-both teams get 800 units of unobsrutcted vision around the payload
+-a few small bug fixes
