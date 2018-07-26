@@ -19,5 +19,6 @@ These are the features which were added which are not normally part of Dota 2:
 - Custom Map
 - Falling of the map
 - Payload navigating along a path
+- Custom UI elements
 
 ![jump pad dota](https://i.imgur.com/4QQ3vLK.jpg)
